@@ -3,9 +3,7 @@ import reset from 'styled-reset';
 console.log(reset);
 const GlobalStyle = createGlobalStyle`
   ${reset}
-
-	//전역스타일
-	
+	font-family: sans-serif;
 `;
 
 export default GlobalStyle;
