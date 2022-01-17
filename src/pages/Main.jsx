@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Nav } from '../components/Nav';
+import { Carousel } from './Carousel/Carousel';
 
 export const Main = () => {
   return (
     <>
       <NavWrap>
-        <Nav>dodo</Nav>
+        <Nav />
       </NavWrap>
-      <SlideWrap>dffd</SlideWrap>
+      <SlideWrap>
+        <Carousel />
+      </SlideWrap>
     </>
   );
 };
@@ -15,11 +19,7 @@ export const Main = () => {
 const NavWrap = styled.div`
   width: 100%;
   background-color: white;
-  border-bottom: 1px solid #dbdbdb;
-`;
-const Nav = styled.nav`
-  max-width: 1060px;
-  margin: 0 auto;
+  border-bottom: 1px solid #e1e2e3;
 `;
 
 const SlideWrap = styled.div``;
