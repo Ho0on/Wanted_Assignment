@@ -19,21 +19,21 @@ export const Carousel = () => {
 
   return (
     <CarouselWrap>
+      {slideData &&
+        slideData.map(el => {
+          return (
+            <SlideContainer key={el.id}>
+              <InfoCard title={el.title} content={el.content} />
+              <SlideImg src={el.img} />
+            </SlideContainer>
+          );
+        })}
       <LeftButton>
         <LeftArrow />
       </LeftButton>
       <RightButton>
         <RightArrow />
       </RightButton>
-      {slideData &&
-        slideData.map(el => {
-          return (
-            <SlideContainer key={el.id}>
-              <InfoCard />
-              <SlideImg src={el.img} />
-            </SlideContainer>
-          );
-        })}
     </CarouselWrap>
   );
 };
@@ -44,9 +44,11 @@ const CarouselWrap = styled.div`
   align-items: center;
   padding-top: 25px;
   overflow: hidden;
+  position: relative;
 `;
 
 const SlideContainer = styled.div`
+  position: relative;
   max-width: 1060px;
   padding: 0px 12px;
 `;
@@ -59,13 +61,15 @@ const SlideButton = styled.button`
   border: none;
   border-radius: 15px;
   position: absolute;
+  z-index: 99;
+  cursor: pointer;
 `;
 
 const LeftButton = styled(SlideButton)`
-  left: 160px;
+  left: 70px;
 `;
 const RightButton = styled(SlideButton)`
-  right: 160px;
+  right: 70px;
 `;
 
 const SlideImg = styled.img``;
