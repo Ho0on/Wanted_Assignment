@@ -6,7 +6,8 @@ import { ReactComponent as LeftArrow } from '../../assets/LeftArrow.svg';
 import { ReactComponent as RightArrow } from '../../assets/RightArrow.svg';
 
 export const Carousel = () => {
-  const [slideData, setSlideData] = useState();
+  const [slideData, setSlideData] = useState([]);
+  const [currentSlideId, setCurrentSlideId] = useState(4);
 
   const getData = async () => {
     const result = await (await fetch('/data/slideData.json')).json();
@@ -17,21 +18,47 @@ export const Carousel = () => {
     getData();
   }, []);
 
+  const prevSlide = () => {
+    // const newSlideData = [...slideData];
+    // const shiftData = newSlideData.pop();
+    // newSlideData.unshift(shiftData);
+    // setSlideData(newSlideData);
+    currentSlideId === 0
+      ? setCurrentSlideId(slideData.length - 1)
+      : setCurrentSlideId(currentSlideId - 1);
+  };
+
+  const nextSlide = () => {
+    // const newSlideData = [...slideData];
+    // const shiftData = newSlideData.shift();
+    // newSlideData.push(shiftData);
+    // setSlideData(newSlideData);
+    currentSlideId >= slideData.length - 1
+      ? setCurrentSlideId(0)
+      : setCurrentSlideId(currentSlideId + 1);
+  };
+
   return (
     <CarouselWrap>
-      {slideData &&
-        slideData.map(el => {
+      <CarouselImg>
+        {slideData.map(el => {
+          const isActiveSlide = currentSlideId === el.id;
           return (
-            <SlideContainer key={el.id}>
-              <InfoCard title={el.title} content={el.content} />
-              <SlideImg src={el.img} />
+            <SlideContainer key={el.id} currentSlideId={currentSlideId}>
+              {isActiveSlide && (
+                <InfoCard title={el.title} content={el.content} />
+              )}
+              <ImgWrap>
+                <SlideImg src={el.img} isActiveSlide={isActiveSlide} />
+              </ImgWrap>
             </SlideContainer>
           );
         })}
-      <LeftButton>
+      </CarouselImg>
+      <LeftButton onClick={prevSlide}>
         <LeftArrow />
       </LeftButton>
-      <RightButton>
+      <RightButton onClick={nextSlide}>
         <RightArrow />
       </RightButton>
     </CarouselWrap>
@@ -40,6 +67,7 @@ export const Carousel = () => {
 
 const CarouselWrap = styled.div`
   display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
   padding-top: 25px;
@@ -47,10 +75,32 @@ const CarouselWrap = styled.div`
   position: relative;
 `;
 
+const CarouselImg = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+`;
+
 const SlideContainer = styled.div`
+  display: flex;
   position: relative;
   max-width: 1060px;
   padding: 0px 12px;
+  transform: ${props => `translateX(${4 - props.currentSlideId}00%)`};
+  transition: all 0.5s ease-in-out;
+`;
+
+const ImgWrap = styled.div`
+  width: 1060px;
+  background-color: black;
+`;
+
+const SlideImg = styled.img`
+  width: 100%;
+  height: 100%;
+  opacity: ${props => (props.isActiveSlide ? 1 : 0.3)};
 `;
 
 const SlideButton = styled.button`
@@ -71,5 +121,3 @@ const LeftButton = styled(SlideButton)`
 const RightButton = styled(SlideButton)`
   right: 70px;
 `;
-
-const SlideImg = styled.img``;
