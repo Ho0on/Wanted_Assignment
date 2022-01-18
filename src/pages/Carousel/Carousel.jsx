@@ -8,6 +8,7 @@ import { ReactComponent as RightArrow } from '../../assets/RightArrow.svg';
 export const Carousel = () => {
   const [slideData, setSlideData] = useState([]);
   const [currentSlideId, setCurrentSlideId] = useState(4);
+  // const [leftOrRight, setLeftOrRight] = useState('');
 
   const getData = async () => {
     const result = await (await fetch('/data/slideData.json')).json();
@@ -18,7 +19,20 @@ export const Carousel = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      currentSlideId >= slideData.length - 1
+        ? setCurrentSlideId(0)
+        : setCurrentSlideId(prev => prev + 1);
+    }, 4000);
+
+    return () => {
+      clearInterval(slideInterval);
+    };
+  }, [currentSlideId, slideData]);
+
   const prevSlide = () => {
+    // setLeftOrRight('left');
     // const newSlideData = [...slideData];
     // const shiftData = newSlideData.pop();
     // newSlideData.unshift(shiftData);
@@ -29,6 +43,7 @@ export const Carousel = () => {
   };
 
   const nextSlide = () => {
+    // setLeftOrRight('right');
     // const newSlideData = [...slideData];
     // const shiftData = newSlideData.shift();
     // newSlideData.push(shiftData);
@@ -45,12 +60,12 @@ export const Carousel = () => {
           const isActiveSlide = currentSlideId === el.id;
           return (
             <SlideContainer key={el.id} currentSlideId={currentSlideId}>
-              {isActiveSlide && (
-                <InfoCard title={el.title} content={el.content} />
-              )}
               <ImgWrap>
                 <SlideImg src={el.img} isActiveSlide={isActiveSlide} />
               </ImgWrap>
+              {isActiveSlide && (
+                <InfoCard title={el.title} content={el.content} />
+              )}
             </SlideContainer>
           );
         })}
@@ -89,18 +104,34 @@ const SlideContainer = styled.div`
   max-width: 1060px;
   padding: 0px 12px;
   transform: ${props => `translateX(${4 - props.currentSlideId}00%)`};
-  transition: all 0.5s ease-in-out;
+  /* transform: ${props =>
+    props.leftOrRight &&
+    `translateX(${props.leftOrRight === 'right' ? -1 : 1}00%)`}; */
+  transition: all 0.3s ease-in-out;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    align-items: center;
+  } ;
 `;
 
 const ImgWrap = styled.div`
   width: 1060px;
   background-color: black;
+
+  @media screen and (max-width: 1200px) {
+    height: 183px;
+  } ;
 `;
 
 const SlideImg = styled.img`
   width: 100%;
   height: 100%;
   opacity: ${props => (props.isActiveSlide ? 1 : 0.3)};
+
+  @media screen and (max-width: 1200px) {
+    object-fit: cover;
+  } ;
 `;
 
 const SlideButton = styled.button`
@@ -113,11 +144,15 @@ const SlideButton = styled.button`
   position: absolute;
   z-index: 99;
   cursor: pointer;
+
+  @media screen and (max-width: 1200px) {
+    display: none;
+  } ;
 `;
 
 const LeftButton = styled(SlideButton)`
-  left: 70px;
+  left: calc((100% - 1210px) / 2);
 `;
 const RightButton = styled(SlideButton)`
-  right: 70px;
+  right: calc((100% - 1210px) / 2);
 `;

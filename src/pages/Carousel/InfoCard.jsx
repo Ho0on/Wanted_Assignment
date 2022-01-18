@@ -27,6 +27,11 @@ const CardWrap = styled.div`
   border-radius: 4px;
   background-color: white;
   text-align: left;
+
+  @media screen and (max-width: 1200px) {
+    position: static;
+    text-align: center;
+  } ;
 `;
 
 const Title = styled.h2`
@@ -42,6 +47,11 @@ const Content = styled.h3`
   border-bottom: 1px solid #dbdbdb;
   font-size: 14px;
   line-height: 1.64;
+
+  @media screen and (max-width: 1200px) {
+    border: none;
+    height: 28px;
+  } ;
 `;
 
 const Btn = styled.button`
@@ -54,6 +64,10 @@ const Btn = styled.button`
   font-weight: 700;
   color: #36f;
   cursor: pointer;
+
+  @media screen and (max-width: 1200px) {
+    margin: 0 auto;
+  } ;
 `;
 
 const RightArrowWrap = styled.span`

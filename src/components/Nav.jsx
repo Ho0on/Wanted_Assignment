@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as Search } from '../assets/Search.svg';
 import { ReactComponent as Bell } from '../assets/Bell.svg';
+import { ReactComponent as MoreBtn } from '../assets/MoreBtn.svg';
 
 const NAV_ITEM = [
   '채용',
@@ -39,6 +40,7 @@ export const Nav = () => {
           </ProfileImgBorder>
         </RightItem>
         <GrayLine />
+        <MoreBtn />
         <RightItem>기업 서비스</RightItem>
       </NavRightWrap>
     </NavBox>
@@ -51,6 +53,10 @@ const NavBox = styled.nav`
   align-items: center;
   max-width: 1060px;
   margin: 0 auto;
+
+  @media screen and (max-width: 1060px) {
+    justify-content: space-around;
+  }
 `;
 
 const NavLeftWrap = styled.div`
@@ -85,7 +91,7 @@ const NavRightWrap = styled.ul`
   align-items: center;
   padding: 8px 0px;
 
-  li:nth-child(5) {
+  li:nth-child(6) {
     padding: 8px 10px;
     border: 1px solid #e1e2e3;
     border-radius: 40px;
@@ -97,6 +103,12 @@ const RightItem = styled.li`
   padding: 3px;
   font-size: 14px;
   margin: 0px 7px;
+
+  @media screen and (max-width: 993px) {
+    :nth-child(6) {
+      display: none;
+    }
+  }
 `;
 
 const ProfileImgBorder = styled.div`
@@ -105,6 +117,10 @@ const ProfileImgBorder = styled.div`
   padding: 1px;
   border: 1px solid grey;
   border-radius: 50%;
+
+  @media screen and (max-width: 993px) {
+    display: none;
+  }
 `;
 
 const ProfileImg = styled.img`
@@ -117,4 +133,8 @@ const GrayLine = styled.div`
   border-left: 1px solid #e1e2e3;
   height: 10px;
   margin: 0 15px;
+
+  @media screen and (max-width: 993px) {
+    display: none;
+  }
 `;
