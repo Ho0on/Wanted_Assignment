@@ -1,6 +1,5 @@
 ## Wanted-pre-onboarding 1st Assignment
-## 3조 - 삼전십만가조
-### 김상훈, 오동녘어진이, 이나은, 홍정빈
+## 3조 삼전십만가조 - ### 김상훈, 오동녘어진이, 이나은, 홍정빈
 
 ### 1. 배포 주소
 https://github.com/eojine94/wanted_currency_calculator
