@@ -25,6 +25,8 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+  height: 400px;
   margin: 100px;
 `;
 
@@ -34,12 +36,11 @@ const BoxWrapper = styled.div`
   align-items: center;
   width: 300px;
   height: 100px;
-  margin-bottom: 100px;
   border-radius: 25px;
   background-color: ${props => (props.idx === 1 ? '#c58f69' : '#9B9740')};
 `;
 
-const CalculatorBox = styled.text`
+const CalculatorBox = styled.div`
   font-size: 20px;
   font-weight: bold;
 `;
