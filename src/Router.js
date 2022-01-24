@@ -1,9 +1,9 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./Main";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Main from './Main';
 
-import FirstCalculator from "./pages/FirstCalculator/FirstCalculator";
-import SecondCalculator from "./pages/SecondCalculator/SecondCalculator";
+import FirstCalculator from './pages/FirstCalculator/FirstCalculator';
+import SecondCalculator from './pages/SecondCalculator/SecondCalculator';
 
 function Router() {
   return (
