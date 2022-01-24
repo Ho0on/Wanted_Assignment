@@ -1,41 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { numberFormat } from '../../utils';
+
 const NATION_OPTION = [
-  { name: '한국(KRW)' },
-  { name: '일본(JPY)' },
-  { name: '필리핀(PHP)' },
+  { name: '한국(KRW)', value: 'USDKRW' },
+  { name: '일본(JPY)', value: 'USDJPY' },
+  { name: '필리핀(PHP)', value: 'USDPHP' },
 ];
 
 function FirstCalculator() {
   const [currencyData, setCurrencyData] = useState();
+  const [selectCurrency, setSelectCurrency] = useState();
+  const [currencyUnit, setCurrencyUnit] = useState('KRW');
 
   const getData = async () => {
     const result = await (
       await fetch(process.env.REACT_APP_API_ADDRESS)
     ).json();
-    setCurrencyData(result);
+    setCurrencyData(result.quotes);
+    setSelectCurrency(result.quotes.USDKRW);
   };
 
   useEffect(() => {
     getData();
   }, []);
 
-  console.log(currencyData);
+  const handleSelectBox = e => {
+    const { value } = e.target;
+    setSelectCurrency(currencyData[value]);
+    setCurrencyUnit(value.slice(3, 6));
+  };
 
   return (
     <Container>
       <HeadTitle>환율 계산</HeadTitle>
       <Content>송금국가: 미국(USD)</Content>
       <Content>
-        수취국가:
-        <SelectBox>
-          {NATION_OPTION.map(el => {
-            return <SelectItem>{el.name}</SelectItem>;
+        수취국가:&nbsp;
+        <SelectBox onChange={handleSelectBox}>
+          {NATION_OPTION.map((el, idx) => {
+            return (
+              <SelectItem key={idx} value={el.value}>
+                {el.name}
+              </SelectItem>
+            );
           })}
         </SelectBox>
       </Content>
-      <Content>환율:</Content>
+      <Content>
+        환율:
+        {selectCurrency &&
+          `${numberFormat(selectCurrency)} ${currencyUnit}/USD`}
+      </Content>
       <Content>
         송금액: <MoneyInput type="number" /> USD
       </Content>
