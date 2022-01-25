@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-const CURRENCY_OPTION = [
-  { name: '미국(USD)', value: 'USD' },
-  { name: '한국(KRW)', value: 'KRW' },
-  { name: '홍콩(HDK)', value: 'HDK' },
-  { name: '일본(JPY)', value: 'JPY' },
-  { name: '캐나다(CAD)', value: 'CAD' },
-  { name: '중국(CNY)', value: 'CNY' },
-];
+import {
+  formatingNumber,
+  formatingTimestamp,
+  makingTapMenu,
+  calculateCurrency,
+} from '../../utils';
 
 function SecondCalculator() {
   const [currencyData, setCurrencyData] = useState();
-  const [selectCurrency, setSelectCurrency] = useState(0);
   const [payValue, setPayValue] = useState(0);
-  const [selectedDropdown, setSelectedDropdown] = useState();
-  const [selectedDropUnit, setSelectedDropUnit] = useState();
+  const [selectedDropUnit, setSelectedDropUnit] = useState('USD');
+  const [selectedTapUnit, setSelectedTapUnit] = useState();
+  const [date, setDate] = useState();
 
   const getData = async () => {
     const result = await (
-      await fetch(process.env.REACT_APP_API_ADDRESS_SECOND)
+      await fetch(process.env.REACT_APP_API_ADDRESS)
     ).json();
-    setCurrencyData(result.quotes);
-    setSelectCurrency(result.quotes.USDKRW);
+    setCurrencyData([
+      { name: 'USD', value: result.quotes.USDUSD },
+      { name: 'KRW', value: result.quotes.USDKRW },
+      { name: 'HKD', value: result.quotes.USDHKD },
+      { name: 'JPY', value: result.quotes.USDJPY },
+      { name: 'CAD', value: result.quotes.USDCAD },
+      { name: 'CNY', value: result.quotes.USDCNY },
+    ]);
+    setDate(formatingTimestamp(result.timestamp));
   };
 
   useEffect(() => {
@@ -37,14 +41,18 @@ function SecondCalculator() {
     setPayValue(event.target.value);
   };
 
-  const handleDropmenu = e => {
+  const handleDropMenu = e => {
     const { value } = e.target;
-    setSelectedDropUnit(value.slice(-4, -1));
+    setSelectedDropUnit(value);
+    setSelectedTapUnit(makingTapMenu(currencyData, value)[0].name);
+    calculateCurrency(currencyData, value, selectedTapUnit, payValue);
   };
 
-  const newCurrencyOption = CURRENCY_OPTION.filter(
-    el => el.value !== selectedDropUnit
-  );
+  const handleTapMenu = e => {
+    const { innerHTML } = e.target;
+    setSelectedTapUnit(innerHTML);
+    calculateCurrency(currencyData, selectedDropUnit, innerHTML, payValue);
+  };
 
   return (
     <Wrapper>
@@ -54,27 +62,52 @@ function SecondCalculator() {
             type="number"
             onClick={onClickBlank}
             onChange={changeInputValue}
-            onBlur={() => setPayValue(0)}
             value={payValue > 1000 ? 1000 : payValue}
           />
           <SelectBox>
-            <Selected onChange={handleDropmenu}>
-              {CURRENCY_OPTION.map((el, idx) => {
-                return <option key={idx}>{el.name}</option>;
-              })}
+            <Selected onChange={handleDropMenu}>
+              {currencyData &&
+                currencyData.map((el, idx) => {
+                  return <option key={idx}>{el.name}</option>;
+                })}
             </Selected>
           </SelectBox>
         </CurrencyTopBox>
         <CurrencyBottomBox>
           <UnitTab>
-            {newCurrencyOption.map((el, idx) => {
-              return (
-                <UnitListWrapper key={idx}>
-                  <UnitListItem>{el.value}</UnitListItem>
-                </UnitListWrapper>
-              );
-            })}
+            {currencyData &&
+              makingTapMenu(currencyData, selectedDropUnit).map((el, idx) => {
+                return (
+                  <UnitListWrapper
+                    key={idx}
+                    onClick={handleTapMenu}
+                    active={el.name === selectedTapUnit}
+                  >
+                    <UnitListItem>{el.name}</UnitListItem>
+                  </UnitListWrapper>
+                );
+              })}
           </UnitTab>
+          <CurrencyResultBox>
+            <Nation>
+              <Name>{selectedTapUnit}</Name>
+              <Currency>
+                {currencyData &&
+                  formatingNumber(
+                    calculateCurrency(
+                      currencyData,
+                      selectedDropUnit,
+                      selectedTapUnit,
+                      payValue
+                    ) || 0
+                  )}
+              </Currency>
+            </Nation>
+            <Date>
+              <Title>기준일 : </Title>
+              <SubTitle>{date}</SubTitle>
+            </Date>
+          </CurrencyResultBox>
         </CurrencyBottomBox>
       </Container>
     </Wrapper>
@@ -103,7 +136,7 @@ const CurrencyTopBox = styled.div`
   margin-top: 30px;
 `;
 const PayBox = styled.input`
-  width: 150px;
+  width: 200px;
   height: 50px;
   border: 4px solid black;
   font-size: 20px;
@@ -120,15 +153,15 @@ const PayBox = styled.input`
 const SelectBox = styled.form`
   display: flex;
   justify-content: flex-end;
-  width: 150px;
-  height: 50px;
+  width: 100px;
+  height: 25px;
   border: 4px solid black;
   &:focus {
     outline: none;
   }
 `;
 const Selected = styled.select`
-  width: 200px;
+  width: 100px;
   option {
     text-align: center;
   }
@@ -151,8 +184,44 @@ const UnitListWrapper = styled.li`
   text-align: center;
   font-size: 1rem;
   line-height: 2rem;
-  border: 1px black solid;
+  border: 2px solid black;
+  cursor: pointer;
+  ${props =>
+    props.active && 'border-bottom: 1px solid white; background-color: white'};
 `;
 const UnitListItem = styled.div``;
+
+const CurrencyResultBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  margin: 35px 0 0 30px;
+`;
+const Nation = styled.div`
+  display: flex;
+`;
+const Name = styled.h1`
+  margin-right: 10px;
+  font-size: 25px;
+  font-weight: 700;
+`;
+const Currency = styled.h1`
+  font-size: 25px;
+  font-weight: 700;
+`;
+const Date = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 16px 0 0 5px;
+  font-weight: 700;
+`;
+const Title = styled.h4`
+  margin-bottom: 5px;
+  font-size: 15px;
+`;
+const SubTitle = styled.h4`
+  font-size: 15px;
+`;
 
 export default SecondCalculator;
