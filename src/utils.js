@@ -31,3 +31,4 @@ export function calculateCurrency(data, selectCur, tapCur, pay) {
 
   return resultMultiplyPay;
 }
+
