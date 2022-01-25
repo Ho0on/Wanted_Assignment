@@ -7,7 +7,7 @@ const CURRENCY_OPTION = [
   { name: '홍콩(HDK)', value: 'HDK' },
   { name: '일본(JPY)', value: 'JPY' },
   { name: '캐나다(CAD)', value: 'CAD' },
-  { name: '즁귝(CNY)', value: 'CNY' },
+  { name: '중국(CNY)', value: 'CNY' },
 ];
 
 function SecondCalculator() {
