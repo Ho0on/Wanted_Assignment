@@ -6,3 +6,13 @@ export function formatingNumber(num) {
 
   return resultNumber;
 }
+
+export const formatingTimestamp = timestamp => {
+  const date = new Date(timestamp * 1000);
+  const year = date.getFullYear();
+  const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(
+    date.getMonth()
+  );
+  const day = date.getDate();
+  return `${year}-${month}-${day}`;
+};
