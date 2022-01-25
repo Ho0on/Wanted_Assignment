@@ -1,8 +1,12 @@
 ## Wanted-pre-onboarding 1st Assignment
-## 3조 삼전십만가조 - 김상훈, 오동녘어진이, 이나은, 홍정빈
+## 3조 삼전십만가조 
+- [김상훈](https://github.com/Ho0on)
+- [오동녘어진이](https://github.com/eojine94)
+- [이나은](https://github.com/cotton-cotton)
+- [홍정빈](https://github.com/tohjbin2)
 
 ### 1. 배포 주소
-http://mycurrencycalculator.s3-website.ap-northeast-2.amazonaws.com
+[데모 링크](http://mycurrencycalculator.s3-website.ap-northeast-2.amazonaws.com)
 
 ### 2. 과제 구현 목록
 - 첫번째 계산기
@@ -21,11 +25,39 @@ http://mycurrencycalculator.s3-website.ap-northeast-2.amazonaws.com
 6) API에서 timestamp를 받아와 기준일을 날짜 포맷에 맞게 출력한다.
 
 ### 3. 설치 및 시작하는 법
-1) git clone https://github.com/eojine94/wanted_currency_calculator
-2) npm install
-3) .env파일 추가- REACT_APP_API_ADDRESS=http://api.currencylayer.com/live?access_key={API키}
-4) npm start
+
+1) 파일 클론 받기
+```
+git clone https://github.com/eojine94/wanted_currency_calculator
+```
+
+2) node-modules 설치
+```
+cd wanted_currency_caculator
+npm install
+```
+3) .env 파일 추가하여 코드 작성
+```
+ REACT_APP_API_ADDRESS=http://api.currencylayer.com/live?access_key={API키}
+```
+4) 실행
+```
+npm start
+```
 
 ### 4. 기능별 영상
-![firstCal](https://user-images.githubusercontent.com/63281199/151019550-7a7c098e-4008-4d40-8b13-ea5bebc4b3e0.gif)</br>
-![secondCal](https://user-images.githubusercontent.com/63281199/151019622-03a4d1cb-daa4-4d97-8372-292c2be96840.gif)
+
+***첫번쨰 계산기***
+
+</br>
+
+<img src='https://user-images.githubusercontent.com/63281199/151019550-7a7c098e-4008-4d40-8b13-ea5bebc4b3e0.gif'/>
+</br>
+<hr/>
+</br>
+
+***두번쨰 계산기***
+
+</br>
+
+<img src='https://user-images.githubusercontent.com/63281199/151019622-03a4d1cb-daa4-4d97-8372-292c2be96840.gif'/>
