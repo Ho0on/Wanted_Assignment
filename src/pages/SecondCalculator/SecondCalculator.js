@@ -11,7 +11,7 @@ function SecondCalculator() {
   const [currencyData, setCurrencyData] = useState();
   const [payValue, setPayValue] = useState(0);
   const [selectedDropUnit, setSelectedDropUnit] = useState('USD');
-  const [selectedTapUnit, setSelectedTapUnit] = useState();
+  const [selectedTapUnit, setSelectedTapUnit] = useState('KRW');
   const [date, setDate] = useState();
 
   const getData = async () => {
@@ -32,10 +32,6 @@ function SecondCalculator() {
   useEffect(() => {
     getData();
   }, []);
-
-  const onClickBlank = () => {
-    setPayValue('');
-  };
 
   const changeInputValue = event => {
     setPayValue(event.target.value);
@@ -60,7 +56,6 @@ function SecondCalculator() {
         <CurrencyTopBox>
           <PayBox
             type="number"
-            onClick={onClickBlank}
             onChange={changeInputValue}
             value={payValue > 1000 ? 1000 : payValue}
           />
